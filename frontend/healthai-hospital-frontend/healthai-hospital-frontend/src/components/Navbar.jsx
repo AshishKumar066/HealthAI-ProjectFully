@@ -1,0 +1,116 @@
+import { useNavigate } from "react-router-dom";
+
+import {
+  Menu,
+  Search,
+  Bell,
+  ChevronDown,
+  HeartPulse,
+  Siren,
+} from "lucide-react";
+
+function Navbar({ onMenuClick, sidebarOpen }) {
+  const navigate = useNavigate();
+
+  // Emergency page navigation
+  const handleEmergency = () => {
+    navigate("/emergency");
+  };
+
+  // Login page navigation
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  return (
+    <header className="top-navbar">
+
+      {/* LEFT */}
+      <div className="navbar-left">
+
+        <button
+          className={`menu-toggle ${sidebarOpen ? "menu-toggle-active" : ""}`}
+          onClick={onMenuClick}
+          aria-label={sidebarOpen ? "Collapse navigation" : "Expand navigation"}
+        >
+          <Menu size={23} />
+        </button>
+
+        <div
+          className="navbar-brand"
+          onClick={() => navigate("/")}
+        >
+          <div className="navbar-brand-icon">
+            <HeartPulse size={19} />
+          </div>
+
+          <div className="navbar-brand-text">
+            <strong>HealthAI</strong>
+            <span>Smart Healthcare</span>
+          </div>
+        </div>
+
+      </div>
+
+
+      {/* SEARCH */}
+      <div className="navbar-search">
+
+        <Search size={18} />
+
+        <input
+          type="text"
+          placeholder="Search patients, doctors, appointments..."
+        />
+
+      </div>
+
+
+      {/* RIGHT */}
+      <div className="navbar-actions">
+
+        {/* Emergency Button */}
+        <button
+          className="emergency-navbar-btn"
+          onClick={handleEmergency}
+        >
+          <Siren size={18} />
+          <span>Emergency</span>
+        </button>
+
+
+        {/* Notification Button */}
+        <button
+          className="navbar-icon-btn"
+          aria-label="Notifications"
+        >
+          <Bell size={20} />
+          <span className="notification-dot"></span>
+        </button>
+
+
+        {/* Profile / Login */}
+        <button
+          className="navbar-profile"
+          onClick={handleLogin}
+          aria-label="Open login"
+        >
+          <div className="profile-avatar">
+            AU
+          </div>
+
+          <div className="profile-info">
+            <strong>Admin User</strong>
+            <span>Administrator</span>
+          </div>
+
+          <ChevronDown size={16} />
+        </button>
+
+      </div>
+
+    </header>
+  );
+}
+
+export default Navbar;
