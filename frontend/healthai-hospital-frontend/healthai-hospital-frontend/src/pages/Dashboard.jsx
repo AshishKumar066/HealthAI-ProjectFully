@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import {
   MapPin,
   ChevronLeft,
@@ -7,7 +8,6 @@ import {
   Users,
   Stethoscope,
   Bed,
-  Bot,
   Activity,
   ArrowUpRight,
 } from "lucide-react";
@@ -15,6 +15,8 @@ import {
 import StatCard from "../components/StatCard";
 import StatusBadge from "../components/StatusBadge";
 import AIBot from "../components/AIBot/AIBot";
+
+import { getDashboardStats } from "../services/dashboardService";
 
 const cityData = {
   Muzaffarnagar: {
@@ -582,12 +584,57 @@ const cities = Object.keys(cityData);
 
 function Dashboard() {
   const [selectedCity, setSelectedCity] = useState("Muzaffarnagar");
+
+  const [dashboardStats, setDashboardStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [statsError, setStatsError] = useState("");
+
   const hospitalSliderRef = useRef(null);
   const heroRef = useRef(null);
 
   const city = cityData[selectedCity];
   const hospitals = city.hospitals;
 
+  /*
+   * Load real dashboard statistics from Spring Boot.
+   *
+   * Dashboard is public, so we only call the protected
+   * dashboard statistics API when a JWT token exists.
+   */
+  useEffect(() => {
+    const token = localStorage.getItem("healthai_token");
+
+    if (!token) {
+      return;
+    }
+
+    const loadDashboardStats = async () => {
+      try {
+        setStatsLoading(true);
+        setStatsError("");
+
+        const data = await getDashboardStats();
+
+        console.log("Dashboard Stats:", data);
+
+        setDashboardStats(data);
+      } catch (error) {
+        console.error("Dashboard stats error:", error);
+
+        setStatsError(
+          error?.message || "Unable to load dashboard statistics",
+        );
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    loadDashboardStats();
+  }, []);
+
+  /*
+   * Hospital horizontal slider
+   */
   const scrollHospitals = (direction) => {
     if (!hospitalSliderRef.current) return;
 
@@ -599,6 +646,9 @@ function Dashboard() {
     });
   };
 
+  /*
+   * Navbar / hero scroll behavior
+   */
   useEffect(() => {
     const handleScroll = () => {
       if (!heroRef.current) return;
@@ -606,28 +656,73 @@ function Dashboard() {
       const heroHeight = heroRef.current.offsetHeight;
       const scrollPosition = window.scrollY;
 
-      const percentage = (scrollPosition / heroHeight) * 100;
+      const percentage =
+        heroHeight > 0 ? (scrollPosition / heroHeight) * 100 : 0;
 
       document.body.classList.toggle(
         "dashboard-nav-transparent",
         scrollPosition > 40,
       );
 
-      document.body.classList.toggle("dashboard-nav-hide", percentage >= 75);
+      document.body.classList.toggle(
+        "dashboard-nav-hide",
+        percentage >= 75,
+      );
     };
 
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+
       document.body.classList.remove("dashboard-nav-transparent");
       document.body.classList.remove("dashboard-nav-hide");
     };
   }, []);
 
+  /*
+   * Backend response can have slightly different property names
+   * depending on the DTO returned by Spring Boot.
+   */
+  const totalPatients =
+    dashboardStats?.totalPatients ??
+    dashboardStats?.patients ??
+    dashboardStats?.patientCount ??
+    null;
+
+  const totalDoctors =
+    dashboardStats?.availableDoctors ??
+    dashboardStats?.totalDoctors ??
+    dashboardStats?.doctors ??
+    dashboardStats?.doctorCount ??
+    null;
+
+  const totalAppointments =
+    dashboardStats?.totalAppointments ??
+    dashboardStats?.appointments ??
+    dashboardStats?.appointmentCount ??
+    null;
+
+  const formatStatValue = (value) => {
+    if (statsLoading) {
+      return "...";
+    }
+
+    if (value === null || value === undefined) {
+      return "—";
+    }
+
+    if (typeof value === "number") {
+      return value.toLocaleString();
+    }
+
+    return value;
+  };
+
   return (
     <div className="dashboard-page">
       {/* HERO BANNER */}
+
       <section ref={heroRef} className="dashboard-hero">
         <div className="hero-background">
           <div className="hero-orb hero-orb-one"></div>
@@ -678,6 +773,7 @@ function Dashboard() {
 
             <div className="medical-status">
               <div className="status-dot"></div>
+
               <div>
                 <strong>Healthcare System</strong>
                 <small>Operational & Connected</small>
@@ -693,11 +789,14 @@ function Dashboard() {
       </section>
 
       {/* LOCATION */}
+
       <section className="location-section">
         <div className="location-content">
           <div>
             <span className="section-eyebrow">YOUR LOCATION</span>
+
             <h2>Healthcare near you</h2>
+
             <p>
               Select your city to discover hospitals and healthcare services
               around you.
@@ -724,26 +823,33 @@ function Dashboard() {
       </section>
 
       {/* STATS */}
+
       <section className="dashboard-stats">
         <StatCard
           title="Total Patients"
-          value="1,284"
+          value={formatStatValue(totalPatients)}
           icon={<Users size={22} />}
-          trend="+12.5%"
+          trend={
+            statsError ? "Unavailable" : statsLoading ? "Loading" : "Live"
+          }
         />
 
         <StatCard
           title="Available Doctors"
-          value="48"
+          value={formatStatValue(totalDoctors)}
           icon={<Stethoscope size={22} />}
-          trend="+4.2%"
+          trend={
+            statsError ? "Unavailable" : statsLoading ? "Loading" : "Live"
+          }
         />
 
         <StatCard
           title="Appointments"
-          value="326"
+          value={formatStatValue(totalAppointments)}
           icon={<CalendarPlus size={22} />}
-          trend="+8.7%"
+          trend={
+            statsError ? "Unavailable" : statsLoading ? "Loading" : "Live"
+          }
         />
 
         <StatCard
@@ -757,13 +863,38 @@ function Dashboard() {
         />
       </section>
 
+      {/* API ERROR MESSAGE */}
+
+      {statsError && (
+        <div
+          style={{
+            margin: "0 auto 20px",
+            maxWidth: "1200px",
+            padding: "12px 16px",
+            borderRadius: "10px",
+            background: "#fff4f4",
+            border: "1px solid #ffd6d6",
+            color: "#b42318",
+            fontSize: "14px",
+          }}
+        >
+          Dashboard statistics could not be loaded. Other public dashboard
+          features are still available.
+        </div>
+      )}
+
       {/* NEAREST HOSPITALS */}
+
       <section className="hospital-section">
         <div className="section-heading-row">
           <div>
             <span className="section-eyebrow">NEARBY HEALTHCARE</span>
+
             <h2>Nearest Hospitals</h2>
-            <p>Top hospitals around {selectedCity}, sorted by distance.</p>
+
+            <p>
+              Top hospitals around {selectedCity}, sorted by distance.
+            </p>
           </div>
 
           <div className="hospital-slider-buttons">
@@ -785,17 +916,24 @@ function Dashboard() {
 
         <div ref={hospitalSliderRef} className="hospital-slider">
           {hospitals.map((hospital) => (
-            <article className="hospital-dashboard-card" key={hospital.id}>
+            <article
+              className="hospital-dashboard-card"
+              key={hospital.id}
+            >
               <div className="hospital-card-top">
                 <div className="hospital-icon">
                   <Activity size={23} />
                 </div>
 
-                <span className="distance-badge">{hospital.distance}</span>
+                <span className="distance-badge">
+                  {hospital.distance}
+                </span>
               </div>
 
               <div className="hospital-card-content">
-                <div className="hospital-rating">★ {hospital.rating}</div>
+                <div className="hospital-rating">
+                  ★ {hospital.rating}
+                </div>
 
                 <h3>{hospital.name}</h3>
 
@@ -835,6 +973,7 @@ function Dashboard() {
       </section>
 
       {/* LOWER DASHBOARD */}
+
       <section className="dashboard-lower-grid">
         <div className="panel">
           <div className="panel-header">
@@ -920,15 +1059,13 @@ function Dashboard() {
           </div>
         </div>
       </section>
+
+      {/* AI ASSISTANT */}
+
       <AIBot />
-      {/* <button
-        className="ai-bot-floating"
-        title="How can i Help you ?"
-      >
-        <Bot size={28} />
-        <span className="ai-bot-pulse"></span>
-      </button> */}
     </div>
   );
 }
+
 export default Dashboard;
+
