@@ -1,114 +1,113 @@
-import { useNavigate } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
 import {
   Menu,
   Search,
   Bell,
   ChevronDown,
+  ChevronRight,
+  ChevronLeft,
   HeartPulse,
   Siren,
 } from "lucide-react";
 
-function Navbar({ onMenuClick, sidebarOpen }) {
+function Navbar({
+  onMenuClick,
+  sidebarMode = "hidden",
+  overlay = false,
+}) {
   const navigate = useNavigate();
 
-  // Emergency page navigation
-  const handleEmergency = () => {
-    navigate("/emergency");
-  };
-
-  // Login page navigation
-  const handleLogin = () => {
-    navigate("/login");
-  };
+  const MenuIcon =
+    sidebarMode === "hidden"
+      ? Menu
+      : sidebarMode === "rail"
+        ? ChevronRight
+        : ChevronLeft;
 
   return (
-    <header className="top-navbar">
-
-      {/* LEFT */}
+    <header
+      className={`top-navbar ${overlay ? "top-navbar-overlay" : ""
+        }`}
+    >
       <div className="navbar-left">
-
         <button
-          className={`menu-toggle ${sidebarOpen ? "menu-toggle-active" : ""}`}
+          className={`menu-toggle ${sidebarMode !== "hidden"
+              ? "menu-toggle-active"
+              : ""
+            }`}
           onClick={onMenuClick}
-          aria-label={sidebarOpen ? "Collapse navigation" : "Expand navigation"}
+          aria-label="Toggle sidebar"
+          title={
+            sidebarMode === "hidden"
+              ? "Open sidebar"
+              : sidebarMode === "rail"
+                ? "Expand sidebar"
+                : "Collapse sidebar"
+          }
         >
-          <Menu size={23} />
+          <MenuIcon size={23} />
         </button>
 
-        <div
+        <button
+          type="button"
           className="navbar-brand"
           onClick={() => navigate("/")}
+          aria-label="HealthAI home"
         >
-          <div className="navbar-brand-icon">
+          <span className="navbar-brand-icon">
             <HeartPulse size={19} />
-          </div>
+          </span>
 
-          <div className="navbar-brand-text">
+          <span className="navbar-brand-text">
             <strong>HealthAI</strong>
             <span>Smart Healthcare</span>
-          </div>
-        </div>
-
+          </span>
+        </button>
       </div>
 
-
-      {/* SEARCH */}
-      <div className="navbar-search">
-
+      <label className="navbar-search">
         <Search size={18} />
-
         <input
-          type="text"
+          type="search"
           placeholder="Search patients, doctors, appointments..."
         />
+      </label>
 
-      </div>
-
-
-      {/* RIGHT */}
       <div className="navbar-actions">
-
-        {/* Emergency Button */}
         <button
           className="emergency-navbar-btn"
-          onClick={handleEmergency}
+          onClick={() => navigate("/emergency")}
         >
           <Siren size={18} />
           <span>Emergency</span>
         </button>
 
-
-        {/* Notification Button */}
         <button
           className="navbar-icon-btn"
           aria-label="Notifications"
+          type="button"
         >
           <Bell size={20} />
-          <span className="notification-dot"></span>
+          <span className="notification-dot" />
         </button>
 
-
-        {/* Profile / Login */}
         <button
           className="navbar-profile"
-          onClick={handleLogin}
+          onClick={() => navigate("/login")}
           aria-label="Open login"
+          type="button"
         >
-          <div className="profile-avatar">
-            AU
-          </div>
+          <span className="profile-avatar">AU</span>
 
-          <div className="profile-info">
+          <span className="profile-info">
             <strong>Admin User</strong>
             <span>Administrator</span>
-          </div>
+          </span>
 
           <ChevronDown size={16} />
         </button>
-
       </div>
-
     </header>
   );
 }

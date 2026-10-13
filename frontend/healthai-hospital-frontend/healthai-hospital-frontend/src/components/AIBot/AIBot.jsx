@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Bot, X } from "lucide-react";
+import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import AIChatWindow from "./AIChatWindow";
 import "./aiBot.css";
 
@@ -10,7 +11,7 @@ function AIBot() {
         setIsOpen((prev) => !prev);
     };
 
-    return (
+    return createPortal(
         <>
             {/* AI Chat Window */}
             {isOpen && (
@@ -24,21 +25,25 @@ function AIBot() {
                 className={`ai-bot-floating ${isOpen ? "ai-bot-open" : ""}`}
                 onClick={toggleChat}
                 title={isOpen ? "Close AI Assistant" : "Open AI Assistant"}
-                aria-label={
-                    isOpen ? "Close AI Assistant" : "Open AI Assistant"
-                }
+                aria-label={isOpen ? "Close AI Assistant" : "Open AI Assistant"}
             >
                 {isOpen ? (
                     <X size={27} />
                 ) : (
-                    <Bot size={29} />
+                    <video
+                        className="ai-bot-video"
+                        src="videos/Live-chatbot.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                    />
                 )}
 
-                {!isOpen && (
-                    <span className="ai-bot-online-dot"></span>
-                )}
+                {!isOpen && <span className="ai-bot-online-dot"></span>}
             </button>
-        </>
+        </>,
+        document.body
     );
 }
 

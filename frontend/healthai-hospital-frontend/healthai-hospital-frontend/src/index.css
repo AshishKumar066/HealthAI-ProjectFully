@@ -3690,3 +3690,463 @@ td strong {
   }
 }
 
+
+/* ===== Transparent Navbar Over Video ===== */
+
+.app-layout {
+  position: relative;
+  min-height: 100vh;
+}
+
+.main-area {
+  position: relative;
+  min-width: 0;
+  transition:
+    margin-left 0.42s cubic-bezier(.22, 1, .36, 1),
+    width 0.42s cubic-bezier(.22, 1, .36, 1);
+}
+
+.top-navbar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1300;
+  width: 100%;
+  min-height: 78px;
+  padding: 14px clamp(16px, 2.4vw, 38px);
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.top-navbar-overlay .navbar-brand-text strong,
+.top-navbar-overlay .navbar-brand-text span,
+.top-navbar-overlay .navbar-profile .profile-info strong,
+.top-navbar-overlay .navbar-profile .profile-info span {
+  color: #fff !important;
+}
+
+.top-navbar-overlay .navbar-search {
+  background: transparent !important;
+  border-color: rgba(255,255,255,.48) !important;
+  box-shadow: none !important;
+  color: #fff;
+}
+
+.top-navbar-overlay .navbar-search input,
+.top-navbar-overlay .navbar-search svg {
+  color: #fff !important;
+}
+
+.top-navbar-overlay .navbar-search input::placeholder {
+  color: rgba(255,255,255,.82);
+}
+
+.top-navbar-overlay .navbar-icon-btn,
+.top-navbar-overlay .navbar-profile {
+  color: #fff;
+  background: transparent;
+  border-color: rgba(255,255,255,.35);
+  box-shadow: none;
+}
+
+.menu-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  color: #fff;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.38);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background .25s ease, transform .25s ease;
+}
+
+.menu-toggle:hover,
+.menu-toggle-active {
+  background: rgba(255,255,255,.22);
+}
+
+/* ===== Sidebar Glassmorphism ===== */
+
+.sidebar {
+  z-index: 1200;
+  background: rgba(241,250,253,.70) !important;
+  border-right: 1px solid rgba(255,255,255,.5) !important;
+  backdrop-filter: blur(30px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(165%) !important;
+  box-shadow: 18px 0 55px rgba(13,49,67,.16) !important;
+  transition:
+    width .42s cubic-bezier(.22, 1, .36, 1),
+    transform .42s cubic-bezier(.22, 1, .36, 1),
+    opacity .25s ease;
+}
+
+.sidebar.sidebar-hidden {
+  width: 0 !important;
+  min-width: 0 !important;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateX(-105%);
+  pointer-events: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.sidebar.sidebar-rail .sidebar-header {
+  display: none;
+}
+
+.sidebar.sidebar-rail .sidebar-content {
+  padding-top: 24px;
+}
+
+.sidebar.sidebar-rail .sidebar-link {
+  justify-content: center;
+}
+
+.sidebar.sidebar-rail .sidebar-link-label,
+.sidebar.sidebar-rail .menu-label,
+.sidebar.sidebar-rail .sidebar-status > div:last-child {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.sidebar.sidebar-open .sidebar-header {
+  display: flex;
+  min-height: 78px;
+  padding: 0 20px;
+  justify-content: space-between;
+}
+
+.sidebar.sidebar-open .sidebar-link-label,
+.sidebar.sidebar-open .menu-label,
+.sidebar.sidebar-open .sidebar-status > div:last-child {
+  opacity: 1;
+  width: auto;
+  visibility: visible;
+}
+
+.sidebar-close {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(175,207,218,.65);
+  border-radius: 11px;
+  color: #416b7b;
+  background: rgba(255,255,255,.48);
+}
+
+/* ===== Desktop: Hidden / Compact / Expanded ===== */
+
+@media (min-width: 901px) {
+  .sidebar-hidden-layout .main-area {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .sidebar-compact .main-area {
+    margin-left: 78px !important;
+    width: calc(100% - 78px) !important;
+  }
+
+  .sidebar-expanded .main-area {
+    margin-left: 270px !important;
+    width: calc(100% - 270px) !important;
+  }
+
+  .sidebar.sidebar-rail {
+    width: 78px;
+  }
+
+  .sidebar.sidebar-open {
+    width: 270px;
+  }
+}
+
+/* ===== Mobile Drawer ===== */
+
+@media (max-width: 900px) {
+  .main-area,
+  .sidebar-hidden-layout .main-area,
+  .sidebar-compact .main-area,
+  .sidebar-expanded .main-area {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .sidebar.sidebar-open {
+    position: fixed;
+    z-index: 1200;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(290px, 86vw);
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .top-navbar-overlay {
+    min-height: 68px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .top-navbar-overlay .navbar-brand-text {
+    display: none;
+  }
+
+  .top-navbar-overlay .navbar-search {
+    max-width: 38vw;
+    min-width: 88px;
+  }
+
+  .top-navbar-overlay .navbar-actions {
+    gap: 7px;
+  }
+
+  .top-navbar-overlay .emergency-navbar-btn span {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .main-area,
+  .menu-toggle {
+    transition: none !important;
+  }
+}
+
+
+/* Transparent hamburger button */
+.top-navbar-overlay .menu-toggle {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: #ffffff !important;
+}
+
+.top-navbar-overlay .menu-toggle:hover,
+.top-navbar-overlay .menu-toggle-active {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Transparent HealthAI brand container */
+.top-navbar-overlay .navbar-brand,
+.top-navbar-overlay .navbar-brand-icon,
+.top-navbar-overlay .navbar-brand-text {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Remove unwanted border and outline */
+.top-navbar-overlay .navbar-brand {
+  border: none !important;
+  outline: none !important;
+}
+
+/* White logo and text over video */
+.top-navbar-overlay .navbar-brand-icon,
+.top-navbar-overlay .navbar-brand-text strong,
+.top-navbar-overlay .navbar-brand-text span {
+  color: #ffffff !important;
+}
+
+/* Keep the logo icon transparent */
+.top-navbar-overlay .navbar-brand-icon {
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+}
+
+/* Ensure navbar itself stays transparent */
+.top-navbar-overlay {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+/* =====================================
+   HEALTHAI — DARK GLASS SIDEBAR
+===================================== */
+
+.sidebar {
+  /* Dark blue glass matching hero video */
+  background: rgba(5, 22, 35, 0.66) !important;
+
+  /* Glass border */
+  border-right: 1px solid rgba(143, 218, 242, 0.20) !important;
+
+  /* Frosted glass blur */
+  backdrop-filter: blur(26px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(26px) saturate(145%) !important;
+
+  /* Subtle blue shadow */
+  box-shadow:
+    12px 0 40px rgba(0, 0, 0, 0.22),
+    inset -1px 0 0 rgba(255, 255, 255, 0.035) !important;
+
+  color: #f2faff !important;
+}
+
+/* Sidebar headings */
+.sidebar .sidebar-brand-text strong {
+  color: #ffffff !important;
+}
+
+.sidebar .sidebar-brand-text span,
+.sidebar .menu-label {
+  color: rgba(195, 222, 237, 0.66) !important;
+}
+
+/* Navigation links */
+.sidebar .sidebar-link {
+  color: rgba(226, 241, 250, 0.82) !important;
+  background: transparent !important;
+  border: 1px solid transparent;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* Hover glass effect */
+.sidebar .sidebar-link:hover {
+  background: rgba(119, 207, 238, 0.11) !important;
+  border-color: rgba(119, 207, 238, 0.15);
+  color: #ffffff !important;
+  transform: translateX(3px);
+}
+
+/* Active navigation */
+.sidebar .sidebar-link.active {
+  background: rgba(50, 177, 218, 0.20) !important;
+  border-color: rgba(113, 218, 248, 0.24);
+  color: #ffffff !important;
+  box-shadow: inset 3px 0 0 #59c9ed;
+}
+
+/* Navigation icons */
+.sidebar .sidebar-link svg {
+  color: #8ddcf5;
+  flex-shrink: 0;
+}
+
+/* System status glass card */
+.sidebar .sidebar-status {
+  background: rgba(85, 191, 220, 0.09) !important;
+  border: 1px solid rgba(143, 218, 242, 0.15) !important;
+  border-radius: 14px;
+  color: #eaf8ff !important;
+}
+
+/* Sidebar close button */
+.sidebar .sidebar-close {
+  background: rgba(255, 255, 255, 0.07) !important;
+  color: #eaf8ff !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.sidebar .sidebar-close:hover {
+  background: rgba(105, 207, 240, 0.17) !important;
+}
+
+/* Compact sidebar tooltip contrast */
+.sidebar.sidebar-rail .sidebar-link {
+  color: #f2faff !important;
+}
+
+/* Mobile backdrop */
+.sidebar-overlay {
+  background: rgba(1, 10, 19, 0.48) !important;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+
+/* Consistent sidebar colour at every screen size */
+.sidebar {
+  background-color: rgba(5, 22, 35, 0.82) !important;
+
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+
+  background-image: none !important;
+  opacity: 1 !important;
+
+  color: #f2faff !important;
+}
+
+/* Keep navigation text and icons bright */
+.sidebar .sidebar-link {
+  color: #eaf7ff !important;
+  opacity: 1 !important;
+}
+
+.sidebar .sidebar-link svg {
+  color: #8ddcf5 !important;
+  opacity: 1 !important;
+}
+
+/* Prevent responsive rules from changing the glass colour */
+@media (min-width: 901px),
+       (max-width: 900px) {
+  .sidebar.sidebar-open,
+  .sidebar.sidebar-rail {
+    background-color: rgba(5, 22, 35, 0.82) !important;
+  }
+}
+
+
+.ai-bot-floating {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-bot-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; /* click button par hi jaye */
+}
+
+.ai-bot-online-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+.ai-chat-wrapper {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    z-index: 9999;
+}

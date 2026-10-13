@@ -258,3 +258,4 @@ body {
 .notification-unread-dot { width: 7px; height: 7px; flex-shrink: 0; margin: 7px 4px 0 0; border-radius: 50%; background: #198da2; box-shadow: 0 0 0 4px rgba(25,141,162,.1); }
 .system-notice { background: #e4f3f8; color: #397f9c; }
 @media (max-width: 600px) { .doctor-modal-form { grid-template-columns: 1fr; } .doctor-field-wide { grid-column: auto; } .doctor-modal { border-radius: 22px; } }
+
