@@ -1,13 +1,24 @@
 package com.healthai.hospital_backend.config;
 
-import com.healthai.hospital_backend.entity.*;
-import com.healthai.hospital_backend.repository.*;
-import com.healthai.hospital_backend.service.AuthService;
+import java.math.BigDecimal;
+import java.time.LocalTime;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
+import com.healthai.hospital_backend.entity.Department;
+import com.healthai.hospital_backend.entity.Doctor;
+import com.healthai.hospital_backend.entity.Hospital;
+import com.healthai.hospital_backend.entity.Notification;
+import com.healthai.hospital_backend.entity.Patient;
+import com.healthai.hospital_backend.entity.Role;
+import com.healthai.hospital_backend.repository.DepartmentRepository;
+import com.healthai.hospital_backend.repository.DoctorRepository;
+import com.healthai.hospital_backend.repository.HospitalRepository;
+import com.healthai.hospital_backend.repository.NotificationRepository;
+import com.healthai.hospital_backend.repository.PatientRepository;
+import com.healthai.hospital_backend.repository.UserRepository;
+import com.healthai.hospital_backend.service.AuthService;
 
 /** Inserts demo data the first time the app starts on an empty database. */
 @Component
