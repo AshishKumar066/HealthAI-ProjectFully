@@ -3495,3 +3495,87 @@ td strong {
 @keyframes healthaiSpin {
   to { transform: rotate(360deg); }
 }
+
+
+/* Hero section */
+.dashboard-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #073f36;
+}
+
+/* Background video container */
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Video: original colours */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  filter: none;
+  opacity: 1;
+}
+
+/* Remove blue and dark overlay */
+.hero-video-shade {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Keep hero content above the video */
+.dashboard-hero .hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.dashboard-hero .hero-copy {
+  max-width: 720px;
+}
+
+/* Text styling */
+.dashboard-hero .hero-copy h1,
+.dashboard-hero .hero-copy p,
+.dashboard-hero .hero-label,
+.dashboard-hero .hero-scroll-indicator {
+  color: #fff;
+}
+
+.dashboard-hero .hero-copy h1 span {
+  color: #a9f0d0;
+}
+
+/* Decorative elements should not block interactions */
+.dashboard-hero .hero-orb,
+.dashboard-hero .hero-grid,
+.dashboard-hero .hero-pulse {
+  pointer-events: none;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero-video {
+    object-position: center;
+  }
+
+  .hero-video-shade {
+    background: transparent;
+  }
+
+  .dashboard-hero .hero-copy {
+    max-width: 100%;
+  }
+}
+
