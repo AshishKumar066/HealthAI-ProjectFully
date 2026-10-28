@@ -197,211 +197,6 @@ a {
 
 
 /* =========================
-   NAVBAR
-========================= */
-
-.top-navbar {
-  width: 100%;
-  height: 72px;
-  padding: 0 30px;
-  box-sizing: border-box;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  /* Completely transparent navbar */
-  background: transparent !important;
-  border-bottom: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none;
-
-  /* Overlay on hero video */
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-
-/* =========================
-   SEARCH BOX
-========================= */
-
-.search-box {
-  width: 400px;
-  max-width: 40%;
-  height: 40px;
-  padding: 0 13px;
-  box-sizing: border-box;
-
-  display: flex;
-  align-items: center;
-  gap: 9px;
-
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 8px;
-
-  color: #ffffff;
-}
-
-.search-box input {
-  width: 100%;
-  border: none;
-  outline: none;
-
-  background: transparent;
-  color: #ffffff;
-
-  font-size: 12px;
-}
-
-.search-box input::placeholder {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-/* Search icon */
-.search-box svg {
-  flex-shrink: 0;
-  color: #ffffff;
-}
-
-/* =========================
-   NAVBAR RIGHT
-========================= */
-
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-}
-
-/* =========================
-   NOTIFICATION BUTTON
-========================= */
-
-.notification-btn {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 6px;
-  background: transparent;
-  border: none;
-
-  color: #ffffff;
-  cursor: pointer;
-}
-
-.notification-btn:hover {
-  opacity: 0.8;
-}
-
-/* Notification indicator */
-
-.notification-dot {
-  width: 6px;
-  height: 6px;
-
-  position: absolute;
-  top: 1px;
-  right: 1px;
-
-  background: var(--danger);
-  border-radius: 50%;
-}
-
-/* =========================
-   PROFILE
-========================= */
-
-.profile {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-
-/* Profile avatar */
-
-.profile-avatar {
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-  background: var(--primary-light);
-  color: var(--primary);
-
-  font-size: 12px;
-  font-weight: 700;
-}
-
-/* Profile information */
-
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.profile-info strong {
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.profile-info span {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 10px;
-}
-
-/* =========================
-   RESPONSIVE NAVBAR
-========================= */
-
-@media (max-width: 768px) {
-  .top-navbar {
-    height: 64px;
-    padding: 0 16px;
-  }
-
-  .search-box {
-    width: 100%;
-    max-width: 220px;
-  }
-
-  .navbar-right {
-    gap: 12px;
-  }
-
-  .profile-info {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .search-box {
-    max-width: 160px;
-    height: 36px;
-    padding: 0 8px;
-  }
-
-  .navbar-right {
-    gap: 8px;
-  }
-
-  .top-navbar {
-    padding: 0 10px;
-  }
-}
-
-/* =========================
    PAGE HEADER
 ========================= */
 
@@ -1451,7 +1246,7 @@ td strong {
   }
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .stats-grid,
   .doctor-grid,
   .department-grid,
@@ -1495,7 +1290,7 @@ td strong {
   .emergency-btn {
     margin-left: 0;
   }
-}
+} */
 
 /* =========================================================
    DASHBOARD HERO
@@ -2175,11 +1970,11 @@ td strong {
 }
 
 
-/* =========================================================
+ /* =========================================================
    NAVBAR SCROLL EFFECT
 ========================================================= */
 
-.top-navbar {
+/* .top-navbar {
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -2716,8 +2511,8 @@ td strong {
   z-index: 1150;
   background: rgba(13, 31, 27, 0.38);
   backdrop-filter: blur(2px);
-}
-
+} 
+ */
 
 /* =========================================================
    EMERGENCY PAGE
@@ -4150,3 +3945,82 @@ td strong {
     right: 24px;
     z-index: 9999;
 }
+
+/* =========================================================
+   FULL SCREEN HERO VIDEO
+========================================================= */
+
+.dashboard-page .dashboard-hero {
+  position: relative;
+  width: 100vw !important;
+  height: 100vh !important;          
+  min-height: 600px;
+  max-height: none !important;
+
+  /* parent ke padding se bahar nikal kar edge to edge */
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  margin-top: 0 !important;
+
+  border-radius: 0 !important;       
+  overflow: hidden;
+}
+
+.dashboard-page .hero-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 !important;
+}
+
+.dashboard-page .hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                
+}
+
+.dashboard-page .hero-video-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(4, 10, 26, 0.7) 0%,
+    rgba(4, 10, 26, 0.3) 55%,
+    rgba(4, 10, 26, 0.1) 100%
+  );
+}
+
+
+.dashboard-page .hero-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-top: 70px;                 
+  box-sizing: border-box;
+}
+
+.dashboard-page .hero-scroll-indicator {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+/* horizontal scrollbar na aaye */
+html,
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 700px) {
+  .dashboard-page .dashboard-hero {
+    height: 100svh !important;       /* mobile browser bar ke hisaab se */
+  }
+}
+

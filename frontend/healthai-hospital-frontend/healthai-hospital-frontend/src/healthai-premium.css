@@ -20,7 +20,7 @@ body {
 
 .app-layout { background: transparent; }
 .main-area { min-width: 0; }
-.page-content { max-width: 1720px; padding: 24px clamp(16px, 2.4vw, 38px) 52px; }
+.page-content { max-width: 1720px; padding: 0px clamp(16px, 2.4vw, 38px) 52px; }
 
 /* iOS-inspired frosted navigation */
 .top-navbar {
@@ -178,7 +178,7 @@ body {
   .hero-medical-card { width: 260px; height: 260px; }
 }
 @media (max-width: 900px) {
-  .page-content { padding-top: 16px; }
+  .page-content { padding-top:0%; }
   .dashboard-hero { margin: -16px -16px 22px; min-height: 560px; border-radius: 0 0 26px 26px; }
   .hero-content { min-height: 560px; padding: 55px 25px 66px; }
   .hero-copy h1 { font-size: clamp(43px, 8vw, 64px); letter-spacing: -2.4px; }

@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -238,6 +237,22 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page">
+      
+      <div className="page-3d-bg" aria-hidden="true">
+        <div className="bg-glow bg-glow-one"></div>
+        <div className="bg-glow bg-glow-two"></div>
+        <div className="bg-glow bg-glow-three"></div>
+        <div className="bg-floor"></div>
+
+        {["one", "two", "three"].map((n) => (
+          <div key={n} className={`bg-cube bg-cube-${n}`}>
+            {["f", "b", "r", "l", "t", "d"].map((face) => (
+              <span key={face} className={`cube-face cube-${face}`}></span>
+            ))}
+          </div>
+        ))}
+      </div>
+
       {/* HERO BANNER WITH BACKGROUND VIDEO */}
       <section ref={heroRef} className="dashboard-hero">
         <div className="hero-background">

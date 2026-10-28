@@ -11,6 +11,8 @@ import {
   Siren,
 } from "lucide-react";
 
+import "./Navbar.css"
+
 function Navbar({
   onMenuClick,
   sidebarMode = "hidden",
@@ -30,23 +32,19 @@ function Navbar({
       className={`top-navbar ${overlay ? "top-navbar-overlay" : ""
         }`}
     >
+      {/* LEFT: Menu + Brand */}
       <div className="navbar-left">
         <button
+          type="button"
           className={`menu-toggle ${sidebarMode !== "hidden"
-              ? "menu-toggle-active"
-              : ""
+            ? "menu-toggle-active"
+            : ""
             }`}
           onClick={onMenuClick}
           aria-label="Toggle sidebar"
-          title={
-            sidebarMode === "hidden"
-              ? "Open sidebar"
-              : sidebarMode === "rail"
-                ? "Expand sidebar"
-                : "Collapse sidebar"
-          }
+          title="Toggle sidebar"
         >
-          <MenuIcon size={23} />
+          <MenuIcon size={22} />
         </button>
 
         <button
@@ -56,7 +54,7 @@ function Navbar({
           aria-label="HealthAI home"
         >
           <span className="navbar-brand-icon">
-            <HeartPulse size={19} />
+            <HeartPulse size={27} strokeWidth={2.2} />
           </span>
 
           <span className="navbar-brand-text">
@@ -66,37 +64,45 @@ function Navbar({
         </button>
       </div>
 
-      <label className="navbar-search">
-        <Search size={18} />
+      {/* CENTER: Search */}
+      <div className="navbar-search">
+        <Search size={19} className="search-icon" />
+
         <input
           type="search"
           placeholder="Search patients, doctors, appointments..."
+          aria-label="Search patients, doctors, and appointments"
         />
-      </label>
 
+        <kbd className="search-shortcut">⌘ K</kbd>
+      </div>
+
+      {/* RIGHT: Actions */}
       <div className="navbar-actions">
         <button
+          type="button"
           className="emergency-navbar-btn"
           onClick={() => navigate("/emergency")}
         >
-          <Siren size={18} />
+          <Siren size={19} />
           <span>Emergency</span>
         </button>
 
         <button
+          type="button"
           className="navbar-icon-btn"
           aria-label="Notifications"
-          type="button"
+          title="Notifications"
         >
-          <Bell size={20} />
+          <Bell size={21} />
           <span className="notification-dot" />
         </button>
 
         <button
+          type="button"
           className="navbar-profile"
           onClick={() => navigate("/login")}
           aria-label="Open login"
-          type="button"
         >
           <span className="profile-avatar">AU</span>
 
@@ -105,7 +111,10 @@ function Navbar({
             <span>Administrator</span>
           </span>
 
-          <ChevronDown size={16} />
+          <ChevronDown
+            size={17}
+            className="profile-chevron"
+          />
         </button>
       </div>
     </header>
