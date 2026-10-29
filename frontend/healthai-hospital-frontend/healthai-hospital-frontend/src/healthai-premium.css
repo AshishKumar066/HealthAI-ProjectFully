@@ -259,3 +259,10 @@ body {
 .system-notice { background: #e4f3f8; color: #397f9c; }
 @media (max-width: 600px) { .doctor-modal-form { grid-template-columns: 1fr; } .doctor-field-wide { grid-column: auto; } .doctor-modal { border-radius: 22px; } }
 
+
+/* Authentication improvements: registration verification and readable feedback */
+.auth-help { display: block; margin: 7px 2px 0; color: #78929c; font-size: 11px; line-height: 1.5; }
+.auth-success { margin: 14px 0; padding: 12px 14px; border: 1px solid #b7e7d1; border-radius: 12px; background: #effcf5; color: #176b49; font-size: 13px; line-height: 1.5; }
+.auth-secondary-btn { width: 100%; min-height: 43px; margin-top: 10px; border: 1px solid #cfe2e9; border-radius: 12px; background: #fff; color: #176d82; font: inherit; font-weight: 700; cursor: pointer; }
+.auth-back-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; background: transparent; color: #287b8e; font: inherit; cursor: pointer; }
+.auth-secondary-btn:disabled, .auth-back-btn:disabled { opacity: .6; cursor: not-allowed; }

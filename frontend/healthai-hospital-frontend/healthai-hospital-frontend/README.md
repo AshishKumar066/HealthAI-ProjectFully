@@ -1,60 +1,41 @@
-# HealthAI Hospital Frontend
+# HealthAI Hospital Frontend (Lightweight Fixed Build)
 
-React + Vite frontend for the HealthAI Hospital Management System.
+This is the React/Vite frontend. `node_modules` is intentionally not included so the ZIP stays small.
 
-## What is included
+## Requirements
+- Node.js 18 or newer
+- MySQL running with the `hospital_db` database
+- The HealthAI Spring Boot backend running on `http://localhost:8080`
 
-- Same HealthAI dashboard, hospital, doctor, patient, appointment, department, prescription, medical-record, billing, emergency and settings UI from the supplied frontend.
-- Desktop sidebar rail: the page remains visible while the sidebar expands/collapses; the content width smoothly adjusts beside it.
-- Mobile sidebar drawer with overlay.
-- Smooth scroll/reveal animations for cards, forms and page sections.
-- Focus animations for form controls.
-- Spring Boot API client with JWT token support.
-- Login and signup connected to `/api/auth/login` and `/api/auth/register`.
-- Doctors and appointments pages connected to the supplied backend, with demo-data fallback if the backend is temporarily unavailable.
+## Start the backend first
+Run the backend project from STS, or from the backend folder with Windows CMD:
 
-## Run
-
-1. Make sure the Spring Boot backend is running on `http://localhost:8080`.
-2. Open this folder in VS Code.
-3. Install dependencies:
-
-```bash
-npm install
+```bat
+mvnw.cmd spring-boot:run
 ```
 
-4. Copy `.env.example` to `.env` if you want to change the API URL.
-5. Start the frontend:
+The backend configuration currently expects MySQL username `root` and password configured in `src/main/resources/application.properties`. Make sure these match your own local MySQL setup. Do not publish real database passwords.
 
-```bash
+Check backend status at `http://localhost:8080/api/health`. It should return `{"status":"UP"}`.
+
+## Start the frontend
+Open CMD in this folder and run:
+
+```bat
+npm install
 npm run dev
 ```
 
-Vite normally shows a URL such as `http://localhost:5173`.
+Open `http://localhost:5173`.
 
-## Backend URL
+## Login / registration
+- Demo admin login (created by the backend seeder if that user does not already exist): `admin@healthai.com` / `admin123`.
+- Public registration requires full name, email, password, and confirm password.
+- Backend password rule: 6–8 characters containing uppercase, lowercase, number, and special character.
+- After registering, check the **Spring Boot console** for the 6-digit OTP, enter it in the frontend, and then sign in. The backend's `app.email.dev-mode=true` prints OTPs to the console instead of emailing them.
+- Newly registered accounts cannot log in until email verification succeeds.
 
-Default:
+If demo admin login returns 401, the database may already contain an older admin account with a different password. The seeder intentionally does not overwrite existing users. Verify the stored user/password state before resetting anything in the database.
 
-```text
-http://localhost:8080/api
-```
-
-To change it:
-
-```env
-VITE_API_BASE_URL=http://localhost:8080/api
-```
-
-## Demo login from the supplied Spring Boot DataSeeder
-
-```text
-Email: admin@healthai.com
-Password: admin123
-```
-
-Other seeded accounts may be available in the backend project's `DataSeeder.java`.
-
-## Important
-
-The browser must be allowed by the Spring Boot CORS configuration. If the frontend runs on a different Vite port, add that exact origin to the backend's `app.cors.allowed-origins` property.
+## API URL
+The `.env` file uses `VITE_API_BASE_URL=http://localhost:8080/api`. Change it only if your backend is running at another address/port, then restart Vite.

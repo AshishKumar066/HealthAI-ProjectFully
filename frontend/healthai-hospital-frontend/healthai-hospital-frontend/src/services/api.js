@@ -14,10 +14,15 @@ export async function apiRequest(endpoint, options = {}) {
 
   if (token) headers.set("Authorization", `Bearer ${token}`);
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
+  } catch (error) {
+    throw new Error(`Cannot connect to HealthAI backend at ${API_BASE_URL}. Start the Spring Boot application on port 8080 and try again.`);
+  }
 
   const contentType = response.headers.get("content-type") || "";
   const data = contentType.includes("application/json")
