@@ -17,124 +17,14 @@ import StatusBadge from "../components/StatusBadge";
 import AIBot from "../components/AIBot/AIBot";
 
 import { getDashboardStats } from "../services/dashboardService";
+import { getHospitals } from "../services/hospitalService";
 
-const cityData = {
-  Muzaffarnagar: {
-    state: "Uttar Pradesh",
-    hospitals: [
-      { id: 1, name: "City Care Hospital", location: "Civil Lines, Muzaffarnagar", distance: "1.2 km", beds: 18, available: 7, emergency: true, rating: "4.7" },
-      { id: 2, name: "Shanti Medical Centre", location: "Gandhi Colony, Muzaffarnagar", distance: "2.4 km", beds: 25, available: 11, emergency: true, rating: "4.5" },
-      { id: 3, name: "District Hospital", location: "New Mandi, Muzaffarnagar", distance: "3.1 km", beds: 40, available: 16, emergency: true, rating: "4.3" },
-      { id: 4, name: "LifeLine Hospital", location: "Bhopa Road, Muzaffarnagar", distance: "4.2 km", beds: 30, available: 9, emergency: false, rating: "4.4" },
-      { id: 5, name: "Apollo Care Centre", location: "Roorkee Road, Muzaffarnagar", distance: "5.3 km", beds: 35, available: 13, emergency: true, rating: "4.6" },
-    ],
-  },
-
-  Noida: {
-    state: "Uttar Pradesh",
-    hospitals: [
-      { id: 1, name: "Metro Heart Institute", location: "Sector 12, Noida", distance: "1.5 km", beds: 45, available: 18, emergency: true, rating: "4.8" },
-      { id: 2, name: "Fortis Medical Centre", location: "Sector 62, Noida", distance: "2.1 km", beds: 60, available: 21, emergency: true, rating: "4.7" },
-      { id: 3, name: "Kailash Hospital", location: "Sector 27, Noida", distance: "3.4 km", beds: 55, available: 17, emergency: true, rating: "4.6" },
-      { id: 4, name: "Jaypee Hospital", location: "Sector 128, Noida", distance: "5.2 km", beds: 80, available: 29, emergency: true, rating: "4.8" },
-      { id: 5, name: "Green Life Hospital", location: "Sector 51, Noida", distance: "6.1 km", beds: 35, available: 12, emergency: false, rating: "4.4" },
-    ],
-  },
-
-  Delhi: {
-    state: "Delhi",
-    hospitals: [
-      { id: 1, name: "Max Healthcare", location: "Saket, New Delhi", distance: "2.0 km", beds: 75, available: 28, emergency: true, rating: "4.8" },
-      { id: 2, name: "Apollo Hospital", location: "Sarita Vihar, Delhi", distance: "3.2 km", beds: 90, available: 31, emergency: true, rating: "4.7" },
-      { id: 3, name: "Fortis Hospital", location: "Shalimar Bagh, Delhi", distance: "4.1 km", beds: 70, available: 23, emergency: true, rating: "4.6" },
-      { id: 4, name: "AIIMS Delhi", location: "Ansari Nagar, Delhi", distance: "5.0 km", beds: 100, available: 34, emergency: true, rating: "4.9" },
-      { id: 5, name: "Safdarjung Hospital", location: "Ring Road, Delhi", distance: "6.4 km", beds: 85, available: 26, emergency: true, rating: "4.5" },
-    ],
-  },
-
-  Ghaziabad: {
-    state: "Uttar Pradesh",
-    hospitals: [
-      { id: 1, name: "Yashoda Hospital", location: "Kaushambi, Ghaziabad", distance: "1.4 km", beds: 60, available: 20, emergency: true, rating: "4.7" },
-      { id: 2, name: "Columbia Asia", location: "Indirapuram, Ghaziabad", distance: "2.3 km", beds: 50, available: 15, emergency: true, rating: "4.6" },
-      { id: 3, name: "Santosh Hospital", location: "Pratap Vihar, Ghaziabad", distance: "3.2 km", beds: 40, available: 12, emergency: true, rating: "4.5" },
-      { id: 4, name: "Shivalik Hospital", location: "Vaishali, Ghaziabad", distance: "4.0 km", beds: 35, available: 14, emergency: false, rating: "4.4" },
-      { id: 5, name: "Sanjeevani Hospital", location: "Raj Nagar, Ghaziabad", distance: "5.5 km", beds: 45, available: 18, emergency: true, rating: "4.3" },
-    ],
-  },
-
-  Meerut: {
-    state: "Uttar Pradesh",
-    hospitals: [
-      { id: 1, name: "Anand Hospital", location: "Garh Road, Meerut", distance: "1.7 km", beds: 50, available: 19, emergency: true, rating: "4.6" },
-      { id: 2, name: "KMC Hospital", location: "Lala Ka Bazar, Meerut", distance: "2.5 km", beds: 65, available: 22, emergency: true, rating: "4.5" },
-      { id: 3, name: "Lok Priya Hospital", location: "Delhi Road, Meerut", distance: "3.4 km", beds: 55, available: 16, emergency: true, rating: "4.4" },
-      { id: 4, name: "NMC Hospital", location: "Shastri Nagar, Meerut", distance: "4.1 km", beds: 40, available: 13, emergency: false, rating: "4.3" },
-      { id: 5, name: "Subharti Hospital", location: "NH-58, Meerut", distance: "5.8 km", beds: 75, available: 27, emergency: true, rating: "4.7" },
-    ],
-  },
-
-  Lucknow: {
-    state: "Uttar Pradesh",
-    hospitals: [
-      { id: 1, name: "Medanta Hospital", location: "Sushant Golf City, Lucknow", distance: "2.0 km", beds: 85, available: 31, emergency: true, rating: "4.8" },
-      { id: 2, name: "Apollo Medics", location: "LDA Colony, Lucknow", distance: "3.0 km", beds: 70, available: 24, emergency: true, rating: "4.7" },
-      { id: 3, name: "Ram Manohar Lohia Hospital", location: "Vibhuti Khand, Lucknow", distance: "4.2 km", beds: 90, available: 33, emergency: true, rating: "4.6" },
-      { id: 4, name: "KGMU Hospital", location: "Chowk, Lucknow", distance: "5.1 km", beds: 100, available: 38, emergency: true, rating: "4.8" },
-      { id: 5, name: "Charak Hospital", location: "Mawaiya, Lucknow", distance: "6.0 km", beds: 45, available: 17, emergency: false, rating: "4.4" },
-    ],
-  },
-
-  Jaipur: {
-    state: "Rajasthan",
-    hospitals: [
-      { id: 1, name: "Fortis Hospital Jaipur", location: "Malviya Nagar, Jaipur", distance: "1.8 km", beds: 70, available: 25, emergency: true, rating: "4.7" },
-      { id: 2, name: "Narayana Hospital", location: "Pratap Nagar, Jaipur", distance: "2.6 km", beds: 80, available: 29, emergency: true, rating: "4.8" },
-      { id: 3, name: "SMS Hospital", location: "JLN Marg, Jaipur", distance: "3.5 km", beds: 100, available: 35, emergency: true, rating: "4.6" },
-      { id: 4, name: "Eternal Hospital", location: "Jagatpura, Jaipur", distance: "4.3 km", beds: 50, available: 18, emergency: true, rating: "4.5" },
-      { id: 5, name: "Manipal Hospital", location: "Sector 5, Jaipur", distance: "5.7 km", beds: 65, available: 21, emergency: false, rating: "4.6" },
-    ],
-  },
-
-  Chandigarh: {
-    state: "Chandigarh",
-    hospitals: [
-      { id: 1, name: "Fortis Hospital", location: "Mohali Road, Chandigarh", distance: "1.6 km", beds: 70, available: 24, emergency: true, rating: "4.8" },
-      { id: 2, name: "Max Hospital", location: "Phase 6, Mohali", distance: "2.4 km", beds: 75, available: 28, emergency: true, rating: "4.7" },
-      { id: 3, name: "PGIMER", location: "Sector 12, Chandigarh", distance: "3.2 km", beds: 100, available: 40, emergency: true, rating: "4.9" },
-      { id: 4, name: "Alchemist Hospital", location: "Sector 21, Panchkula", distance: "4.1 km", beds: 45, available: 16, emergency: false, rating: "4.4" },
-      { id: 5, name: "Ivy Hospital", location: "Sector 71, Mohali", distance: "5.2 km", beds: 55, available: 20, emergency: true, rating: "4.5" },
-    ],
-  },
-
-  Mumbai: {
-    state: "Maharashtra",
-    hospitals: [
-      { id: 1, name: "Kokilaben Hospital", location: "Andheri West, Mumbai", distance: "1.5 km", beds: 90, available: 32, emergency: true, rating: "4.8" },
-      { id: 2, name: "Lilavati Hospital", location: "Bandra West, Mumbai", distance: "2.3 km", beds: 80, available: 27, emergency: true, rating: "4.7" },
-      { id: 3, name: "Nanavati Max", location: "Vile Parle, Mumbai", distance: "3.4 km", beds: 75, available: 25, emergency: true, rating: "4.6" },
-      { id: 4, name: "Hinduja Hospital", location: "Mahim, Mumbai", distance: "4.5 km", beds: 65, available: 21, emergency: true, rating: "4.7" },
-      { id: 5, name: "Breach Candy Hospital", location: "Breach Candy, Mumbai", distance: "5.8 km", beds: 55, available: 19, emergency: false, rating: "4.5" },
-    ],
-  },
-
-  Bengaluru: {
-    state: "Karnataka",
-    hospitals: [
-      { id: 1, name: "Manipal Hospital", location: "Old Airport Road, Bengaluru", distance: "1.3 km", beds: 80, available: 30, emergency: true, rating: "4.8" },
-      { id: 2, name: "Apollo Hospital", location: "Bannerghatta Road, Bengaluru", distance: "2.1 km", beds: 75, available: 26, emergency: true, rating: "4.7" },
-      { id: 3, name: "Narayana Health", location: "Hosur Road, Bengaluru", distance: "3.0 km", beds: 100, available: 37, emergency: true, rating: "4.8" },
-      { id: 4, name: "Fortis Hospital", location: "Cunningham Road, Bengaluru", distance: "4.2 km", beds: 65, available: 23, emergency: true, rating: "4.6" },
-      { id: 5, name: "Columbia Asia", location: "Hebbal, Bengaluru", distance: "5.4 km", beds: 50, available: 18, emergency: false, rating: "4.5" },
-    ],
-  },
-};
-
-const cities = Object.keys(cityData);
 
 function Dashboard() {
-  const [selectedCity, setSelectedCity] = useState("Muzaffarnagar");
-
+  const [selectedCity, setSelectedCity] = useState("");
+  const [hospitalRecords, setHospitalRecords] = useState([]);
+  const [hospitalsLoading, setHospitalsLoading] = useState(true);
+  const [hospitalsError, setHospitalsError] = useState("");
   const [dashboardStats, setDashboardStats] = useState(null);
   const [statsLoading, setStatsLoading] = useState(false);
   const [statsError, setStatsError] = useState("");
@@ -142,8 +32,31 @@ function Dashboard() {
   const hospitalSliderRef = useRef(null);
   const heroRef = useRef(null);
 
-  const city = cityData[selectedCity];
-  const hospitals = city.hospitals;
+  const cities = [...new Set(hospitalRecords.map((h) => h.city).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  const hospitals = hospitalRecords.filter((hospital) => (hospital.city || "").toLowerCase() === selectedCity.toLowerCase());
+  const selectedCityState = hospitals[0]?.city || selectedCity;
+
+  useEffect(() => {
+    let active = true;
+    const loadHospitals = async () => {
+      try {
+        setHospitalsLoading(true);
+        setHospitalsError("");
+        const data = await getHospitals();
+        const records = Array.isArray(data) ? data : Array.isArray(data?.content) ? data.content : [];
+        if (!active) return;
+        setHospitalRecords(records);
+        setSelectedCity((current) => current && records.some((h) => (h.city || "").toLowerCase() === current.toLowerCase()) ? current : (records.find((h) => h.city)?.city || ""));
+      } catch (error) {
+        if (active) setHospitalsError(error?.message || "Unable to load hospitals.");
+      } finally {
+        if (active) setHospitalsLoading(false);
+      }
+    };
+    loadHospitals();
+    return () => { active = false; };
+  }, []);
+
 
   useEffect(() => {
     const token = localStorage.getItem("healthai_token");
@@ -237,7 +150,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page">
-      
+
       <div className="page-3d-bg" aria-hidden="true">
         <div className="bg-glow bg-glow-one"></div>
         <div className="bg-glow bg-glow-two"></div>
@@ -308,11 +221,74 @@ function Dashboard() {
               </a>
             </div>
           </div>
+
+
         </div>
 
         <div className="hero-scroll-indicator">
           <span>Scroll to explore</span>
           <div></div>
+        </div>
+      </section>
+
+      {/* HEALTHAI GUIDE: keeps the original hero video untouched */}
+      <section className="healthai-guide-section" aria-labelledby="healthai-guide-title">
+        <div className="healthai-guide-copy">
+          <span className="guide-eyebrow"><Activity size={15} /> YOUR HEALTH, SIMPLIFIED</span>
+          <h2 id="healthai-guide-title">Care that moves <span>with you.</span></h2>
+          <p className="guide-intro">Explore HealthAI in a few seconds. Hover over a guide card to see how each feature can help you take the next step with confidence.</p>
+          <div className="guide-feature-list">
+            <article className="guide-feature-card">
+              <span className="guide-feature-icon"><MapPin size={19} /></span>
+              <span><strong>Find nearby care</strong><small>Explore hospitals and available beds by city.</small></span>
+              <ArrowUpRight className="guide-feature-arrow" size={17} />
+            </article>
+            <article className="guide-feature-card">
+              <span className="guide-feature-icon"><CalendarPlus size={19} /></span>
+              <span><strong>Plan appointments</strong><small>Keep your healthcare visits organised.</small></span>
+              <ArrowUpRight className="guide-feature-arrow" size={17} />
+            </article>
+            <article className="guide-feature-card">
+              <span className="guide-feature-icon"><Activity size={19} /></span>
+              <span><strong>Stay informed</strong><small>Access health tools and important records in one place.</small></span>
+              <ArrowUpRight className="guide-feature-arrow" size={17} />
+            </article>
+          </div>
+        </div>
+        {/* <div className="healthai-guide-media">
+          <div className="guide-media-heading"><span className="guide-live-dot"></span><span>HEALTHAI • PRODUCT TOUR</span></div>
+          <div className="hero-showcase-frame guide-video-frame">
+            <video
+              className="hero-showcase-video"
+              src="/videos/Doctor.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              controls
+              onError={(event) => { event.currentTarget.style.display = "none"; }}
+              aria-label="HealthAI healthcare product tour"
+            />
+            <div className="hero-showcase-fallback">
+              <Activity size={30} />
+              <strong>HealthAI in action</strong>
+              <span>Replace public/videos/Doctor.mp4 with your preferred healthcare showcase video</span>
+            </div>
+          </div>
+          <p className="guide-video-caption">A clearer, more connected healthcare experience.</p>
+        </div> */}
+        <div className="healthai-guide-media">
+          <video
+            className="hero-showcase-video"
+            src="/videos/Doctor.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-label="HealthAI animated healthcare guide"
+          />
         </div>
       </section>
 
@@ -335,6 +311,7 @@ function Dashboard() {
               value={selectedCity}
               onChange={(e) => setSelectedCity(e.target.value)}
             >
+              <option value="">Select a city</option>
               {cities.map((cityName) => (
                 <option key={cityName} value={cityName}>
                   {cityName}
@@ -342,7 +319,7 @@ function Dashboard() {
               ))}
             </select>
 
-            <span className="location-state">{city.state}</span>
+            <span className="location-state">{selectedCityState || "Hospitals from database"}</span>
           </div>
         </div>
       </section>
@@ -378,12 +355,12 @@ function Dashboard() {
 
         <StatCard
           title="Available Beds"
-          value={hospitals.reduce(
-            (total, hospital) => total + hospital.available,
+          value={hospitalsLoading ? "..." : hospitals.reduce(
+            (total, hospital) => total + (Number(hospital.availableBeds) || 0),
             0,
           )}
           icon={<Bed size={22} />}
-          trend="Live"
+          trend={hospitalsError ? "Unavailable" : "Database"}
         />
       </section>
 
@@ -434,6 +411,11 @@ function Dashboard() {
           </div>
         </div>
 
+        {hospitalsError && <div className="hospital-empty-state" role="alert">Hospitals could not be loaded from the backend. {hospitalsError}</div>}
+        {hospitalsLoading && <div className="hospital-empty-state">Loading hospitals from the database…</div>}
+        {!hospitalsLoading && !hospitalsError && hospitals.length === 0 && (
+          <div className="hospital-empty-state">{selectedCity ? `No hospitals are registered in ${selectedCity} yet.` : "No hospitals are registered in the database yet."}</div>
+        )}
         <div ref={hospitalSliderRef} className="hospital-slider">
           {hospitals.map((hospital) => (
             <article
@@ -446,43 +428,43 @@ function Dashboard() {
                 </div>
 
                 <span className="distance-badge">
-                  {hospital.distance}
+                  {hospital.emergencyAvailable ? "Emergency" : "General care"}
                 </span>
               </div>
 
               <div className="hospital-card-content">
-                <div className="hospital-rating">★ {hospital.rating}</div>
+                <div className="hospital-rating">{hospital.emergencyAvailable ? "Emergency services" : "Hospital"}</div>
 
                 <h3>{hospital.name}</h3>
 
                 <p>
                   <MapPin size={15} />
-                  {hospital.location}
+                  {hospital.address || hospital.city || "Address not provided"}
                 </p>
 
                 <div className="hospital-capacity">
                   <div>
                     <span>Available Beds</span>
-                    <strong>{hospital.available}</strong>
+                    <strong>{Number(hospital.availableBeds) || 0}</strong>
                   </div>
 
                   <div>
                     <span>Total Beds</span>
-                    <strong>{hospital.beds}</strong>
+                    <strong>{Number(hospital.totalBeds) || 0}</strong>
                   </div>
                 </div>
 
                 <div className="hospital-card-bottom">
-                  {hospital.emergency ? (
+                  {hospital.emergencyAvailable ? (
                     <StatusBadge status="Active" />
                   ) : (
                     <span className="normal-status">Regular Care</span>
                   )}
 
-                  <button className="view-hospital-btn">
+                  <a href={hospital.id ? `/hospitals/${hospital.id}` : "/hospitals"} className="view-hospital-btn">
                     View Details
                     <ArrowUpRight size={15} />
-                  </button>
+                  </a>
                 </div>
               </div>
             </article>
@@ -505,32 +487,7 @@ function Dashboard() {
           </div>
 
           <div className="appointment-list">
-            <div className="appointment-item">
-              <div className="appointment-avatar">RK</div>
-              <div>
-                <strong>Rahul Kumar</strong>
-                <span>Dr. Amit Sharma · Cardiology</span>
-              </div>
-              <b>10:30 AM</b>
-            </div>
-
-            <div className="appointment-item">
-              <div className="appointment-avatar">PS</div>
-              <div>
-                <strong>Priya Singh</strong>
-                <span>Dr. Neha Gupta · Neurology</span>
-              </div>
-              <b>11:45 AM</b>
-            </div>
-
-            <div className="appointment-item">
-              <div className="appointment-avatar">AM</div>
-              <div>
-                <strong>Arjun Mehta</strong>
-                <span>Dr. Raj Verma · Orthopedics</span>
-              </div>
-              <b>01:15 PM</b>
-            </div>
+            <p className="hospital-empty-state">Appointment records are available in the authenticated Appointments section. This public landing page does not display patient details.</p>
           </div>
         </div>
 
@@ -543,16 +500,17 @@ function Dashboard() {
           </div>
 
           <div className="capacity-list">
+            {!hospitalsLoading && hospitals.length === 0 && <p className="hospital-empty-state">No capacity data available for this city.</p>}
             {hospitals.slice(0, 4).map((hospital) => {
-              const percentage = Math.round(
-                (hospital.available / hospital.beds) * 100,
-              );
+              const totalBeds = Number(hospital.totalBeds) || 0;
+              const availableBeds = Number(hospital.availableBeds) || 0;
+              const percentage = totalBeds > 0 ? Math.round((availableBeds / totalBeds) * 100) : 0;
 
               return (
                 <div className="capacity-item" key={hospital.id}>
                   <div className="capacity-info">
                     <strong>{hospital.name}</strong>
-                    <span>{hospital.available} beds available</span>
+                    <span>{availableBeds} beds available</span>
                   </div>
 
                   <div className="capacity-progress">

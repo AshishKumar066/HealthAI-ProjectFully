@@ -266,3 +266,47 @@ body {
 .auth-secondary-btn { width: 100%; min-height: 43px; margin-top: 10px; border: 1px solid #cfe2e9; border-radius: 12px; background: #fff; color: #176d82; font: inherit; font-weight: 700; cursor: pointer; }
 .auth-back-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; background: transparent; color: #287b8e; font: inherit; cursor: pointer; }
 .auth-secondary-btn:disabled, .auth-back-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+
+/* Local, replaceable right-side hero video */
+.hero-content { display: flex; align-items: center; justify-content: space-between; }
+.hero-showcase { width: min(38%, 470px); flex: 0 0 min(38%, 470px); position: relative; z-index: 1; animation: heroCopyIn 1s var(--motion) both; }
+.hero-showcase-frame { position: relative; aspect-ratio: 4 / 5; max-height: 430px; overflow: hidden; border-radius: 30px; border: 1px solid rgba(218,249,255,.36); background: linear-gradient(145deg, rgba(90,211,218,.2), rgba(9,38,59,.88)); box-shadow: 0 26px 70px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.22); }
+.hero-showcase-video { display: block; width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2; background: #0a3447; }
+.hero-showcase-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; color: #e7fbff; text-align: center; background: radial-gradient(circle at 50% 20%, rgba(74,203,211,.26), transparent 55%), linear-gradient(145deg, rgba(5,40,58,.95), rgba(9,77,91,.9)); }
+.hero-showcase-fallback span { color: rgba(231,251,255,.72); font-size: 12px; line-height: 1.6; }
+.hero-showcase-caption { display: block; margin-top: 12px; color: rgba(231,251,255,.8); font-size: 12px; text-align: center; letter-spacing: .3px; }
+.hospital-empty-state { padding: 18px 20px; margin: 12px 0; border: 1px solid rgba(119,174,189,.28); border-radius: 14px; color: #456879; background: rgba(255,255,255,.72); font-size: 14px; line-height: 1.6; }
+@media (max-width: 1000px) { .hero-content { gap: 28px; } .hero-copy { max-width: 58%; } .hero-showcase { width: 36%; flex-basis: 36%; } .hero-copy h1 { font-size: clamp(40px, 5vw, 60px); letter-spacing: -2px; } }
+@media (max-width: 760px) { .hero-content { flex-direction: column; align-items: stretch; gap: 26px; } .hero-copy { max-width: 100%; } .hero-showcase { width: 100%; max-width: 390px; flex-basis: auto; align-self: center; } .hero-showcase-frame { aspect-ratio: 16 / 10; max-height: none; border-radius: 22px; } .hero-showcase-caption { margin-top: 8px; } }
+@media (prefers-reduced-motion: reduce) { .hero-showcase, .hero-copy { animation: none !important; } }
+
+/* Guide section below the original hero: the existing background video and hero copy stay unchanged. */
+.healthai-guide-section { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(320px,.82fr); gap:clamp(28px,5vw,76px); align-items:center; margin:30px 0 38px; padding:clamp(24px,4vw,54px); overflow:hidden; border:1px solid rgba(177,215,225,.62); border-radius:30px; background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(235,249,251,.88)); box-shadow:0 20px 55px rgba(23,83,103,.075),inset 0 1px 0 #fff; }
+.healthai-guide-copy { min-width:0; animation:guideCopyIn .75s ease both; }
+.guide-eyebrow { display:inline-flex; align-items:center; gap:8px; color:#16859a; font-size:10px; font-weight:850; letter-spacing:1.7px; }
+.healthai-guide-copy h2 { margin:15px 0 12px; color:#173f50; font-size:clamp(30px,3.4vw,48px); line-height:1.08; letter-spacing:-1.8px; }
+.healthai-guide-copy h2 span { display:block; color:#16899a; }
+.guide-intro { max-width:590px; margin:0 0 22px; color:#69828d; font-size:13px; line-height:1.8; }
+.guide-feature-list { display:grid; gap:10px; }
+.guide-feature-card { display:flex; align-items:center; gap:13px; padding:14px 15px; border:1px solid rgba(182,216,225,.65); border-radius:17px; background:rgba(255,255,255,.78); transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease,background .28s ease; }
+.guide-feature-card:hover,.guide-feature-card:focus-within { transform:translateX(7px); border-color:rgba(36,157,173,.65); background:#fff; box-shadow:0 13px 28px rgba(28,115,136,.11); }
+.guide-feature-icon { display:grid; place-items:center; width:42px; height:42px; flex:0 0 42px; border-radius:13px; color:#147d91; background:linear-gradient(145deg,#dff8f7,#e8f0ff); }
+.guide-feature-card > span:nth-child(2) { display:grid; gap:5px; min-width:0; flex:1; }
+.guide-feature-card strong { color:#21495a; font-size:12px; }
+.guide-feature-card small { color:#718994; font-size:11px; line-height:1.5; }
+.guide-feature-arrow { color:#5b9daa; transition:transform .28s ease; }
+.guide-feature-card:hover .guide-feature-arrow { transform:translate(3px,-3px); }
+.healthai-guide-media { min-width:0; padding:13px; border:1px solid rgba(180,218,226,.72); border-radius:25px; background:linear-gradient(145deg,#faffff,#eaf7fa); box-shadow:0 18px 48px rgba(23,83,103,.1); animation:guideMediaFloat 6s ease-in-out infinite; }
+.guide-media-heading { display:flex; align-items:center; gap:9px; padding:5px 6px 13px; color:#567985; font-size:9px; font-weight:850; letter-spacing:1.4px; }
+.guide-live-dot { width:7px; height:7px; border-radius:50%; background:#26b99a; box-shadow:0 0 0 4px rgba(38,185,154,.12); }
+.guide-video-frame { position:relative; aspect-ratio:4/3; overflow:hidden; border-radius:17px; background:linear-gradient(145deg,#0a4157,#0c7180); box-shadow:0 13px 30px rgba(11,64,81,.17); }
+.guide-video-frame .hero-showcase-video { position:relative; z-index:2; width:100%; height:100%; object-fit:cover; background:#0a4157; }
+.guide-video-frame .hero-showcase-fallback { z-index:1; }
+.guide-video-frame .hero-showcase-video:not([src]) { display:none; }
+.guide-video-caption { margin:12px 5px 2px; color:#718994; font-size:11px; text-align:center; }
+@keyframes guideCopyIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes guideMediaFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-5px); } }
+@media(max-width:900px) { .healthai-guide-section { grid-template-columns:1fr; gap:28px; padding:25px; } .healthai-guide-media { width:100%; max-width:560px; justify-self:center; } }
+@media(max-width:600px) { .healthai-guide-section { margin:22px 0 28px; padding:19px; border-radius:22px; } .healthai-guide-copy h2 { font-size:34px; letter-spacing:-1px; } .guide-feature-card { padding:12px; } .guide-feature-card:hover { transform:translateY(-3px); } .guide-video-frame { aspect-ratio:16/10; } }
+@media(prefers-reduced-motion:reduce) { .healthai-guide-copy,.healthai-guide-media { animation:none!important; } .guide-feature-card,.guide-feature-arrow { transition:none!important; } }
